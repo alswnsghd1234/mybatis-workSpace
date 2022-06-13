@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="com.kh.mybatis.board.model.service.BoardServiceImpl"/>
+<fullyQualifiedTypeName name="com.kh.mybatis.board.model.service.BoardService"/>
+<fullyQualifiedTypeName name="org.apache.ibatis.session.SqlSession"/>
+</qualifiedTypeNameHistroy>

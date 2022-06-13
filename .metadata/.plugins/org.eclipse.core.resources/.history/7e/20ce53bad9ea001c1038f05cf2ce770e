@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="boardMapper">
+	<select id="selectListCount" resultType="int">
+		SELECT COUNT(*)
+		FROM BOARD
+		WHERE STATUS = 'Y'
+	</select>
+	
+	<resultMap type="board" id="boardResultSet">
+		<result column="BOARD_NO" property="boardNo"/>
+		<result column="BOARD_TITLE" property="boardTitle"/>
+		<result column="USER_ID" property="boardWriter"/>
+		<result column="COUNT" property="count"/>
+		<result column="CREATE_DATE" property="createDate"/>
+
+		<result column="BOARD_CONTENT" property="boardContent"/>
+	</resultMap>
+	
+	<resultMap type="reply" id="replyResultSet">
+		<result column="REPLY_NO" property="replyNo"/>
+		<result column="REPLY_CONTENT" property="replyContent"/>
+		<result column="REF_BNO" property="refBno"/>
+		<result column="REPLY_WRITER" property="replyWriter"/>
+		<result column="CREATE_DATE" property="createDate"/>
+
+		<result column="STATUS" property="status"/>
+	</resultMap>
+	
+	
+	<select id="selectList" resultMap="boardResultSet" >
+		SELECT BOARD_NO,BOARD_TITLE,USER_ID,COUNT,CREATE_DATE
+		FROM BOARD B
+		JOIN MEMBER ON (USER_NO=BOARD_WRITER)
+		WHERE B.STATUS = 'Y'
+		ORDER BY BOARD_NO DESC
+	</select>
+	
+	<select id="selectDetailBoard" resultMap="boardResultSet" parameterType="int" >
+		SELECT BOARD_NO,BOARD_TITLE,USER_ID,COUNT,CREATE_DATE,BOARD_CONTENT
+		FROM BOARD B
+		JOIN MEMBER ON (USER_NO=BOARD_WRITER)
+		WHERE B.STATUS = 'Y'
+		AND BOARD_NO = #{boardNo}
+	</select>
+	
+	<update id="increaseCount" parameterType="int">
+		UPDATE BOARD
+		SET COUNT = COUNT+1
+		WHERE BOARD_NO = #{boardNo}
+		AND STATUS = 'Y'
+	</update>
+	
+	<select id="selecReplyList" resultMap="replyResultSet" >
+		SELECT REPLY_NO,REPLY_CONTENT,REF_BNO,R.REPLY_WRITER,R.CREATE_DATE,STATUS
+		FROM REPLY R
+		JOIN MEMBER ON (REPLY_WRITER=USER_NO)
+    	WHERE REPLY_NO = #{boardNo}
+		AND R.STATUS = 'Y'
+	</select>
+	
+</mapper>
